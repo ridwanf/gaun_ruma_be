@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 	"gaunRumaRestApi/config"
+	"gaunRumaRestApi/entity"
 	golog "log"
 	"os"
 
@@ -38,6 +39,6 @@ func Init(conf config.Configuration) Handler {
 	if err != nil {
 		log.Fatal("Failed to open database connection: ", err)
 	}
-	// db.AutoMigrate(&entity.User{}, &entity.ProductType{}, &entity.Product{})
+	db.AutoMigrate(&entity.User{}, &entity.ProductType{}, &entity.Product{})
 	return Handler{db}
 }
