@@ -15,5 +15,5 @@ func main() {
 	d := db.Init(conf)
 	e := routes.Init(d, conf)
 
-	e.Logger.Info(e.Start(":3000"))
+	e.Logger.Info(e.Start(":8000"))
 }

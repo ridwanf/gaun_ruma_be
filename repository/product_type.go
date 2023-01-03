@@ -53,7 +53,7 @@ func (p *ProductTypeRepositoryImpl) GetAllProductType() (*[]entity.ProductType, 
 		return &arrProductType, err
 	}
 	for rows.Next() {
-		err = rows.Scan(&productType.ID, &productType.CreatedAt, &productType.UpdatedAt, &productType.TypeName, &productType.TypeCode)
+		err = rows.Scan(&productType.ID, &productType.TypeName, &productType.TypeCode, &productType.CreatedAt, &productType.UpdatedAt)
 		if err != nil {
 			return &arrProductType, err
 		}

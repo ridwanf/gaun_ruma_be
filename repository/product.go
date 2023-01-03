@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"fmt"
 	"gaunRumaRestApi/config/db"
 	"gaunRumaRestApi/entity"
 )
 
 type ProductRepository interface {
-	GetAllProduct() (*[]entity.Product, error)
+	GetAllProduct() ([]*entity.Product, error)
+	GetProductById(id uint) (*entity.Product, error)
 	CreateProduct(name string, code string, price float64, stock uint64, color string, isRejected bool, size string, stockType uint) (*entity.Product, error)
 	UpdateProduct(id uint, name string, code string, price float64, stock uint64, color string, isRejected bool, size string, stockType uint) (*entity.Product, error)
 	DeleteProduct(id uint) (bool, error)
@@ -14,6 +16,17 @@ type ProductRepository interface {
 
 type ProductRepositoryImpl struct {
 	dbHandler *db.Handler
+}
+
+// GetProductById implements ProductRepository
+func (s *ProductRepositoryImpl) GetProductById(id uint) (*entity.Product, error) {
+	var product entity.Product
+	result := s.dbHandler.DB.Preload("ProductType").First(&product, id)
+
+	if result.Error != nil {
+		return &product, result.Error
+	}
+	return &product, nil
 }
 
 // CreateProduct implements ProductRepository
@@ -40,37 +53,15 @@ func (s *ProductRepositoryImpl) DeleteProduct(id uint) (bool, error) {
 }
 
 // GetAllProduct implements ProductRepository
-func (s *ProductRepositoryImpl) GetAllProduct() (*[]entity.Product, error) {
-	var arrProduct []entity.Product
-	var product entity.Product
-	resp := s.dbHandler.DB.Preload("ProductType").Find(&product)
+func (s *ProductRepositoryImpl) GetAllProduct() ([]*entity.Product, error) {
+	var arrProduct []*entity.Product
+	resp := s.dbHandler.DB.Preload("ProductType").Find(&arrProduct)
+	fmt.Println(resp.RowsAffected)
 
 	if resp.Error != nil {
-		return &arrProduct, resp.Error
+		return arrProduct, resp.Error
 	}
-	rows, err := resp.Rows()
-	if err != nil {
-		return &arrProduct, err
-	}
-	for rows.Next() {
-		err = rows.Scan(&product.ID,
-			&product.ProductName,
-			&product.ProductCode,
-			&product.TypeID,
-			&product.ProductReject,
-			&product.ProductColor,
-			&product.ProductSize,
-			&product.ProductStock,
-			&product.ProductPrice,
-			&product.CreatedAt,
-			&product.UpdatedAt,
-		)
-		if err != nil {
-			return &arrProduct, err
-		}
-		arrProduct = append(arrProduct, product)
-	}
-	return &arrProduct, nil
+	return arrProduct, nil
 }
 
 // UpdateProduct implements ProductRepository

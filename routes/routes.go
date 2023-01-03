@@ -5,6 +5,7 @@ import (
 	"gaunRumaRestApi/config"
 	"gaunRumaRestApi/config/db"
 	"gaunRumaRestApi/repository"
+	"gaunRumaRestApi/services"
 	"net/http"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -14,7 +15,6 @@ import (
 )
 
 func Init(d db.Handler, conf config.Configuration) *echo.Echo {
-	productRepository := repository.NewProductRepository(&d)
 	userRepository := repository.NewUserRepository(&d)
 	productTypeRepository := repository.NewProductTypeRepository(&d)
 
@@ -46,12 +46,13 @@ func Init(d db.Handler, conf config.Configuration) *echo.Echo {
 	stockApi := e.Group("/stock")
 
 	stockApi.Use(echojwt.WithConfig(config))
-	handlerStock := handler.NewStockHandler(productRepository)
+	handlerStock := handler.NewProductHandler(services.NewProductService(repository.NewProductRepository(&d)))
 	{
-		stockApi.GET("", handlerStock.GetAllStock)
-		stockApi.POST("", handlerStock.CreateStock)
-		stockApi.PUT("", handlerStock.UpdateStock)
-		stockApi.DELETE("", handlerStock.DeleteStock)
+		stockApi.GET("", handlerStock.GetAllProduct)
+		stockApi.GET("/:id", handlerStock.GetById)
+		stockApi.POST("", handlerStock.CreateProduct)
+		stockApi.PUT("", handlerStock.UpdateProduct)
+		stockApi.DELETE("", handlerStock.DeleteProduct)
 	}
 
 	e.POST("/login", handler.NewUserHandler(userRepository).Login)

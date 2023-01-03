@@ -2,31 +2,31 @@ package handler
 
 import "github.com/golang-jwt/jwt/v4"
 
-type CreateStockRequest struct {
-	StockName       string  `json:"stock_name"`
-	StockCode       string  `json:"stock_code"`
-	StockPrice      float64 `json:"stock_price"`
-	StockQuantity   uint64  `json:"stock_quantity"`
-	StockColor      string  `json:"stock_color"`
-	StockIsRejected bool    `json:"stock_is_rejected"`
-	StockSize       string  `json:"stock_size"`
-	StockType       uint    `json:"stock_type"`
+type CreateProductRequest struct {
+	ProductName       string  `json:"product_name"`
+	ProductCode       string  `json:"product_code"`
+	ProductPrice      float64 `json:"product_price"`
+	ProductQuantity   uint64  `json:"product_quantity"`
+	ProductColor      string  `json:"product_color"`
+	ProductIsRejected bool    `json:"product_is_rejected"`
+	ProductSize       string  `json:"product_size"`
+	ProductType       uint    `json:"product_type"`
 }
 
-type UpdateStockRequest struct {
-	StockId         uint    `json:"stock_id"`
-	StockName       string  `json:"stock_name"`
-	StockCode       string  `json:"stock_code"`
-	StockPrice      float64 `json:"stock_price"`
-	StockQuantity   uint64  `json:"stock_quantity"`
-	StockColor      string  `json:"stock_color"`
-	StockIsRejected bool    `json:"stock_is_rejected"`
-	StockSize       string  `json:"stock_size"`
-	StockType       uint    `json:"stock_type"`
+type UpdateProductRequest struct {
+	ProductId         uint    `json:"product_id"`
+	ProductName       string  `json:"product_name"`
+	ProductCode       string  `json:"product_code"`
+	ProductPrice      float64 `json:"product_price"`
+	ProductQuantity   uint64  `json:"product_quantity"`
+	ProductColor      string  `json:"product_color"`
+	ProductIsRejected bool    `json:"product_is_rejected"`
+	ProductSize       string  `json:"product_size"`
+	ProductType       uint    `json:"product_type"`
 }
 
-type DeleteStockRequest struct {
-	StockId int64 `json:"stock_id"`
+type DeleteProductRequest struct {
+	ProductId int64 `json:"product_id"`
 }
 
 type UserLoginRequest struct {
